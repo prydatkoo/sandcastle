@@ -35,11 +35,22 @@ npm install @ai-hero/sandcastle
 npx sandcastle init
 ```
 
-3. Edit `.sandcastle/.env` and fill in your default values for `ANTHROPIC_API_KEY`
+3. Set up authentication (choose one):
+
+**Option A: API Key** — edit `.sandcastle/.env`:
 
 ```bash
 cp .sandcastle/.env.example .sandcastle/.env
+# Add your ANTHROPIC_API_KEY to .sandcastle/.env
 ```
+
+**Option B: Max/Pro subscription (no API costs)** — requires Claude Code CLI installed and logged in first (`claude login`). Then extract your OAuth token from the macOS Keychain:
+
+```bash
+security find-generic-password -s "Claude Code-credentials" -w > ~/.claude/.credentials.json
+```
+
+This writes the token to `~/.claude/.credentials.json`, which Sandcastle automatically mounts into the Docker container. No `.env` file needed — the agent authenticates using your existing subscription.
 
 4. Run the `.sandcastle/main.ts` (or `main.mts`) file with `npx tsx`
 
