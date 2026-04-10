@@ -1,3 +1,5 @@
+import { homedir } from "node:os";
+
 export interface TokenUsage {
   readonly input_tokens: number;
   readonly output_tokens: number;
@@ -249,6 +251,8 @@ export const claudeCode = (
   options?: ClaudeCodeOptions,
 ): AgentProvider => ({
   name: "claude-code",
+
+  hostMounts: [`${homedir()}/.claude:/home/agent/.claude`],
 
   buildPrintCommand(prompt: string): string {
     const effortFlag = options?.effort ? ` --effort ${options.effort}` : "";
