@@ -101,6 +101,12 @@ const parseStreamJsonLine = (line: string): ParsedStreamEvent[] => {
 
 export interface AgentProvider {
   readonly name: string;
+  /**
+   * Host paths to bind-mount into the Docker container.
+   * Each entry is a Docker volume mount string: `host_path:container_path`.
+   * Used for credential/config mounts (e.g. `~/.claude` for subscription auth).
+   */
+  readonly hostMounts?: readonly string[];
   buildPrintCommand(prompt: string): string;
   buildInteractiveArgs(prompt: string): string[];
   parseStreamLine(line: string): ParsedStreamEvent[];

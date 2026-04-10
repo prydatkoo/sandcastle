@@ -284,6 +284,8 @@ export class WorktreeSandboxConfig extends Context.Tag("WorktreeSandboxConfig")<
     readonly copyToSandbox?: string[];
     /** When specified, the run name is included in the auto-generated branch and worktree names. */
     readonly name?: string;
+    /** Additional host paths to bind-mount into the container (from AgentProvider.hostMounts). */
+    readonly hostMounts?: readonly string[];
   }
 >() {}
 
@@ -382,6 +384,7 @@ export const WorktreeDockerSandboxFactory = {
         worktree: worktreeMode,
         copyToSandbox: copyPaths,
         name,
+        hostMounts: extraMounts,
       } = yield* WorktreeSandboxConfig;
       const isNoneMode = worktreeMode?.mode === "none";
       const branch =
@@ -413,6 +416,7 @@ export const WorktreeDockerSandboxFactory = {
                 const volumeMounts = [
                   `${hostRepoDir}:${SANDBOX_WORKSPACE_DIR}`,
                   ...gitMounts,
+                  ...(extraMounts ?? []),
                 ];
                 return Effect.acquireUseRelease(
                   startSandboxContainer(
@@ -502,6 +506,7 @@ export const WorktreeDockerSandboxFactory = {
                       const volumeMounts = [
                         `${worktreeInfo.path}:${SANDBOX_WORKSPACE_DIR}`,
                         ...gitMounts,
+                        ...(extraMounts ?? []),
                       ];
 
                       return startSandboxContainer(

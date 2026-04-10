@@ -301,6 +301,7 @@ export const run = async (options: RunOptions): Promise<RunResult> => {
         worktree: worktreeMode,
         copyToSandbox: options.copyToSandbox,
         name: options.name,
+        hostMounts: provider.hostMounts,
       }),
       NodeFileSystem.layer,
       displayLayer,

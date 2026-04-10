@@ -450,6 +450,7 @@ const interactiveCommand = Command.make(
             imageName,
             env,
             hostRepoDir,
+            hostMounts: provider.hostMounts,
           }),
           NodeFileSystem.layer,
         ),
